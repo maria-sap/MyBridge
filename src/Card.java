@@ -1,3 +1,4 @@
+package src;
 public class Card {
     // initialise suit and rank parts of card
     private String suit;
