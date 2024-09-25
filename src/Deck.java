@@ -1,12 +1,11 @@
 package src;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck {
     private ArrayList<Card> cardsList = new ArrayList<>();
-    private String[] suits = {"C", "D", "H", "S"};
-    private int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}; // 14 is Ace in this case
+    private String[] suits = {"S", "H", "D", "C"};
+    private int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}; // 14 is Ace
 
     public Deck() {
         createCards();
@@ -25,11 +24,9 @@ public class Deck {
         Collections.shuffle(cardsList);
     }
 
-    // Getter for cardsList
-    public ArrayList<Card> getCards() {
+    public ArrayList<Card> getCards(){
         return cardsList;
     }
-
 
     /*
     public void dealCards(Player[] players) {
