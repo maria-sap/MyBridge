@@ -3,15 +3,15 @@ package src;
 public class Player {
     private Hand playerHand;
     private int playerPosition;
-    private String playerRole;
+    //private String playerRole;
     private int currentBidValue;
     private String currentBidSuit;
 
     // setter
-    public Player(Hand playerHand, int playerPosition, String playerRole, int currentBidValue, String currentBidSuit) {
+    public Player(Hand playerHand, int playerPosition, int currentBidValue, String currentBidSuit) {
         this.playerHand = playerHand;
         this.playerPosition = playerPosition;
-        this.playerRole = playerRole;
+        //this.playerRole = playerRole;
         this.currentBidValue = currentBidValue;
         this.currentBidSuit = currentBidSuit;
     }
@@ -28,10 +28,11 @@ public class Player {
         return playerPosition;
     }
 
-    // get player role
+    // get player role 
+    /* 
     public String getPlayerRole() {
         return playerRole;
-    }
+    } */
 
     // get current bid value
     public int getCurrentBidValue() {

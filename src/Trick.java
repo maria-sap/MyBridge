@@ -24,6 +24,7 @@ public class Trick {
     }
 
     // getters
+    
     // get start suit
     public String getStartSuit(){
         return startSuit;

@@ -28,10 +28,10 @@ public class Deck {
         return cardsList;
     }
 
-    /*
-    public void dealCards(Player[] players) {
+    
+    public void dealCards(ArrayList<Player> players) {
         for (int i = 0; i < cardsList.size(); i++) {
-            players[i % 4].getHand().addCard(cardsList.get(i));
+            players.get(i % 4).getPlayerHand().addCard(cardsList.get(i));
         }
-    } */
+    }
 }

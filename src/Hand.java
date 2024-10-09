@@ -5,16 +5,20 @@ import java.util.Collections;
 public class Hand {
     private ArrayList<Card> handCards;
 
-    public Hand() {
+    public Hand(){
         handCards = new ArrayList<>();
+    }
+
+    public ArrayList<Card> getHandCards() {
+        return handCards;
     }
 
     public void addCard(Card card) {
         handCards.add(card);
     }
 
-    public void removeCard(Card card) {
-        handCards.remove(card);
+    public void removeCard(int cardPosition) {
+        handCards.remove(cardPosition);
     }
 
     public void orderHand() {
@@ -24,9 +28,5 @@ public class Hand {
             }
             return c1.getSuit().compareTo(c2.getSuit());
         });
-    }
-
-    public ArrayList<Card> getHandCards() {
-        return handCards;
     }
 }
