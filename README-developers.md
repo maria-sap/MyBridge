@@ -52,17 +52,13 @@ To save this branch to the repo, run:
 
 To add your code into the main branch (the final product), you must merge what you have written into the main branch.
 
-First things first, add and commit the files you wish
+1. Add and commit the files you wish, then push *your* branch to the github.
 
-To do this, switch to the **main branch**
+2. Go to the github repo.
 
-`git checkout main`
+3. Press pull requests & add request.
 
-
-Only then do you send a merge request:
-
-`git merge "Your name"`
-
+4. Select your branch and submit. Please ask someone to test your code before you merge.
 
 ## Other Notes
 
@@ -70,7 +66,16 @@ Make sure you have the github site opened before you start working. Always check
 
 This is so your code is up to date when you write your code.
 
-To make sure your code is up to date:
+To make sure your 'main' code is up to date:
 
 `git pull`
 
+To make sure your personal branch is up to date with main:
+
+*In your personal branch run*
+
+`git merge main`
+
+---
+
+If you made a bad merge and broke the code and don't know how to revert, reach out to Maria.
