@@ -1,31 +1,30 @@
 package src;
 import java.util.ArrayList;
 
+
 public class Team {
     private boolean vulnerable;
     private int trickCount;
-    private ArrayList<Player> teamPlayers;
+    private ArrayList<Player> players;
 
-    public Team(boolean vulnerable, int trickCount){
-        this.vulnerable = vulnerable;
-        this.trickCount = trickCount;
-        teamPlayers = new ArrayList<>();
-    }
-
-    public void setTeam(Player player1, Player player2){
-        teamPlayers.add(player1);
-        teamPlayers.add(player2);
-    }
-
-    public boolean getVulnerabilityStatus(){
-        return vulnerable;
+    public Team() {
+        players = new ArrayList<>();
     }
 
     public int getTrickCount(){
         return trickCount;
     }
 
+    public boolean getVulnerablityStatus() {
+        return vulnerable;
+    }
+    
     public ArrayList<Player> getTeamPlayers(){
-        return teamPlayers;
+        return players;
+    }
+
+    public void setTeam(Player x, Player y){
+        players.add(x);
+        players.add(y);
     }
 }
