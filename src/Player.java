@@ -4,52 +4,42 @@ public class Player {
     private String playerName;
     private Hand playerHand;
     private int playerPosition;
-    //private String playerRole;
     private int currentBidValue;
     private String currentBidSuit;
+    private boolean hasPassed; // New field to track if the player has passed
 
-    // setter
+    // Constructor
     public Player(String playerName, Hand playerHand, int playerPosition, int currentBidValue, String currentBidSuit) {
         this.playerName = playerName;
         this.playerHand = playerHand;
         this.playerPosition = playerPosition;
-        //this.playerRole = playerRole;
         this.currentBidValue = currentBidValue;
         this.currentBidSuit = currentBidSuit;
+        this.hasPassed = false;
     }
 
-    // getters
-    // get player name
-    public String playerName(){
-        return playerName;
+    // Bid methods
+    public void makeBid(int bidValue, String bidSuit) {
+        this.currentBidValue = bidValue;
+        this.currentBidSuit = bidSuit;
+        this.hasPassed = false;
     }
 
-    // get player hand
-    public Hand getPlayerHand() {
-        return playerHand;
+    public void pass() {
+        this.hasPassed = true;
     }
 
-    // get player position
-    public int getPlayerPosition() {
-        return playerPosition;
+    public boolean hasPassed() {
+        return hasPassed;
     }
 
-    // get player role 
-    /* 
-    public String getPlayerRole() {
-        return playerRole;
-    } */
-
-    // get current bid value
-    public int getCurrentBidValue() {
-        return currentBidValue;
-    }
-
-    // get current bid suit
-    public String getCurrentBidSuit() {
-        return currentBidSuit;
-    }
-
+    // Other existing getters
+    public String getPlayerName() { return playerName; }
+    public Hand getPlayerHand() { return playerHand; }
+    public int getPlayerPosition() { return playerPosition; }
+    public int getCurrentBidValue() { return currentBidValue; }
+    public String getCurrentBidSuit() { return currentBidSuit; }
+    
     public void playCard(int playingCardPosition){
         playerHand.removeCard(playingCardPosition);
     }
