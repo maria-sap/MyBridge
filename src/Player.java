@@ -1,6 +1,7 @@
 package src;
 
 public class Player {
+    private String playerName;
     private Hand playerHand;
     private int playerPosition;
     //private String playerRole;
@@ -8,7 +9,8 @@ public class Player {
     private String currentBidSuit;
 
     // setter
-    public Player(Hand playerHand, int playerPosition, int currentBidValue, String currentBidSuit) {
+    public Player(String playerName, Hand playerHand, int playerPosition, int currentBidValue, String currentBidSuit) {
+        this.playerName = playerName;
         this.playerHand = playerHand;
         this.playerPosition = playerPosition;
         //this.playerRole = playerRole;
@@ -17,6 +19,10 @@ public class Player {
     }
 
     // getters
+    // get player name
+    public String playerName(){
+        return playerName;
+    }
 
     // get player hand
     public Hand getPlayerHand() {
