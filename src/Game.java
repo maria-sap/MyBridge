@@ -9,6 +9,9 @@ public class Game {
     private Contract contract;
     private ArrayList<String> previousBids;
 
+    // Valid suits
+    private final String[] validSuits = {"C", "D", "H", "S"};
+
     public Game(ArrayList<Player> players, Deck deck) {
         this.players = players;
         this.deck = deck;
@@ -17,14 +20,7 @@ public class Game {
 
     public void biddingPhase() {
         while (true) {  // Loop for reshuffling if all players pass
-            // Find the starting player (dealer)
-            for (Player player : players) {
-                if (player.getPlayerPosition() == 1) {
-                    firstPlayer = player;
-                    break;
-                }
-            }
-
+            findFirstPlayer();
             int startingIndex = players.indexOf(firstPlayer);
             int highestBidValue = 0;
             String highestBidSuit = "";
@@ -63,6 +59,12 @@ public class Game {
                         try {
                             bidValue = Integer.parseInt(input.substring(0, input.length() - 1));
                             bidSuit = input.substring(input.length() - 1).toUpperCase(); // Assuming suit is the last character
+
+                            // Validate the suit
+                            if (!isValidSuit(bidSuit)) {
+                                System.out.println("Invalid suit. Please use one of the following suits: C, D, H, S.");
+                                continue; // Prompt the player again
+                            }
 
                             // Check for the first round bid
                             if (firstRound) {
@@ -136,6 +138,15 @@ public class Game {
         }
     }
 
+    private void findFirstPlayer() {
+        // Find the starting player (dealer)
+        for (Player player : players) {
+            if (player.getPlayerPosition() == 1) {
+                firstPlayer = player;
+                break;
+            }
+        }
+    }
 
     // Helper function to compare suits
     private boolean isHigherSuit(String suit1, String suit2) {
@@ -143,5 +154,15 @@ public class Game {
         int index1 = java.util.Arrays.asList(suitOrder).indexOf(suit1);
         int index2 = java.util.Arrays.asList(suitOrder).indexOf(suit2);
         return index1 > index2;
+    }
+
+    // Validate if the suit is one of the allowed suits
+    private boolean isValidSuit(String suit) {
+        for (String validSuit : validSuits) {
+            if (validSuit.equals(suit)) {
+                return true; // Valid suit found
+            }
+        }
+        return false; // No valid suit found
     }
 }
