@@ -1,15 +1,19 @@
 package src;
-import java.util.HashMap;
+
+import java.sql.*;
 import java.util.Scanner;
 
 public class RegisterAndLogin {
 
-    private static final HashMap<String, String> userDatabase = new HashMap<>();
+    private static final String DATABASE_URL = "jdbc:sqlite:./db/users.db"; // Correct relative path
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to the Game System!");
+
+        // Create the database and users table if it doesn't exist
+        createDatabase();
 
         while (true) {
             System.out.println("\nPlease choose an option:");
@@ -18,7 +22,7 @@ public class RegisterAndLogin {
             System.out.println("3. Exit");
             System.out.print("Enter choice (1/2/3): ");
             int choice = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine();  // Consume newline character
 
             if (choice == 1) {
                 registerUser(scanner);
@@ -37,11 +41,25 @@ public class RegisterAndLogin {
         scanner.close();
     }
 
+    private static void createDatabase() {
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL)) {
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS users ("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + "username TEXT UNIQUE NOT NULL,"
+                    + "password TEXT NOT NULL)";
+            Statement stmt = connection.createStatement();
+            stmt.execute(createTableSQL);
+        } catch (SQLException e) {
+            System.err.println("Error creating database: " + e.getMessage());
+        }
+    }
+    
+
     private static void registerUser(Scanner scanner) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
 
-        if (userDatabase.containsKey(username)) {
+        if (userExists(username)) {
             System.out.println("Username already exists!");
             return;
         }
@@ -49,28 +67,62 @@ public class RegisterAndLogin {
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        userDatabase.put(username, password);
-        System.out.println("Registration successful!");
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL)) {
+            String insertSQL = "INSERT INTO users (username, password) VALUES (?, ?)";
+            try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
+                pstmt.setString(1, username);
+                pstmt.setString(2, password);
+                pstmt.executeUpdate();
+                System.out.println("Registration successful!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during registration: " + e.getMessage());
+        }
+    }
+
+    private static boolean userExists(String username) {
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL)) {
+            String selectSQL = "SELECT 1 FROM users WHERE username = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(selectSQL)) {
+                pstmt.setString(1, username);
+                ResultSet rs = pstmt.executeQuery();
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking if user exists: " + e.getMessage());
+            return false;
+        }
     }
 
     private static boolean loginUser(Scanner scanner) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
 
-        if (!userDatabase.containsKey(username)) {
+        if (!userExists(username)) {
             System.out.println("Username does not exist!");
-            return false; // Return false to indicate failed login
+            return false;
         }
 
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        if (password.equals(userDatabase.get(username))) {
-            System.out.println("Login successful!");
-            return true; // Return true to indicate successful login
-        } else {
-            System.out.println("Invalid password.");
-            return false; // Return false for invalid password
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL)) {
+            String selectSQL = "SELECT password FROM users WHERE username = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(selectSQL)) {
+                pstmt.setString(1, username);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next() && rs.getString("password").equals(password)) {
+                    System.out.println("Login successful!");
+                    return true; // Successful login
+                } else {
+                    System.out.println("Invalid password.");
+                    return false; // Invalid password
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during login: " + e.getMessage());
+            return false;
         }
     }
 }
