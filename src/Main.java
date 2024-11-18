@@ -1,6 +1,7 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,45 +10,24 @@ public class Main {
         Team team1 = new Team();
         Team team2 = new Team();
 
-        // creating temporary players
-        players.add(new Player(new Hand(), 1,  0, "None"));
-        players.add(new Player(new Hand(), 2, 0, "None"));
-        players.add(new Player(new Hand(), 3, 0, "None"));
-        players.add(new Player(new Hand(), 4, 0, "None"));
-        
+        // Creating temporary players
+        players.add(new Player("Maria", new Hand(), 1, 0, "None"));
+        players.add(new Player("Eryn", new Hand(), 2, 0, "None"));
+        players.add(new Player("Magda", new Hand(), 3, 0, "None"));
+        players.add(new Player("Enya", new Hand(), 4, 0, "None"));
+
+        // Assigning players to teams
         team1.setTeam(players.get(0), players.get(2));
         team2.setTeam(players.get(1), players.get(3));
 
-        System.out.println("team1");
-        for (Player player : team1.getTeamPlayers()){
-            System.out.println(player);
-        }
-        System.out.println("team2");
-        for (Player player : team2.getTeamPlayers()){
-            System.out.println(player);
-        }
-
-        /* printing the shuffled deck */
-        /*
-        int i = 1;
-        for (Card card : deck.getCards()) {
-            System.out.print(i);
-            System.out.print(" - ");
-            System.out.println(card);
-            i++;
-        } */
-
+        // Dealing cards
         deck.dealCards(players);
 
-        /* printing player's hands */
-        for (Player player : players) {
-            System.out.println("Player " + player.getPlayerPosition() + "'s hand:");
-            for (Card card : player.getPlayerHand().getHandCards()) {
-                System.out.println(card);  // Calls the toString method of Card class
-            }
-            System.out.println();
-        }
+        // Creating a game instance with players and deck
+        Game game = new Game(players, deck);
 
-
+        // Running the bidding phase
+        System.out.println("Starting bidding phase...");
+        game.biddingPhase();
     }
 }
