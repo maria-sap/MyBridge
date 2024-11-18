@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Team {
     private boolean vulnerable;
-    private int trickCount;
+    public int trickCount;
     private ArrayList<Player> players;
 
     public Team() {
