@@ -165,4 +165,97 @@ public class Game {
         }
         return false; // No valid suit found
     }
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void trickPhase() {
+        int numberOfTricks = 13; // Total tricks in a bridge game
+        Player trickLeader = firstPlayer; // The player who leads the first trick
+        Team team1 = new Team();
+        Team team2 = new Team();
+
+        // Assign players to teams (assuming alternating positions belong to the same team)
+        team1.setTeam(players.get(0), players.get(2));
+        team2.setTeam(players.get(1), players.get(3));
+
+        Scanner scanner = new Scanner(System.in);
+
+        // Loop through each trick
+        for (int trick = 1; trick <= numberOfTricks; trick++) {
+            System.out.println("\nTrick " + trick + " begins.");
+
+            ArrayList<Card> cardsPlayed = new ArrayList<>();
+            String leadSuit = null; // Suit of the first card played
+            Player trickWinner = null;
+            Card highestCard = null;
+
+            // Each player plays a card in turn
+            for (int i = 0; i < players.size(); i++) {
+                Player currentPlayer = players.get((players.indexOf(trickLeader) + i) % players.size());
+
+                System.out.println(currentPlayer.getPlayerName() + ", it's your turn.");
+                System.out.println("Your hand: " + currentPlayer.getPlayerHand().getHandCards());
+                System.out.print("Select a card to play (index 0-" + (currentPlayer.getPlayerHand().getHandCards().size() - 1) + "): ");
+
+                Card playedCard = null;
+                while (true) {
+                    try {
+                        int cardPosition = Integer.parseInt(scanner.nextLine());
+                        playedCard = currentPlayer.getPlayerHand().getHandCards().get(cardPosition);
+
+                        // Validate the card (follow lead suit if possible)
+                        if (leadSuit == null || playedCard.getSuit().equals(leadSuit) || !currentPlayerHasSuit(currentPlayer, leadSuit)) {
+                            currentPlayer.playCard(cardPosition);
+                            cardsPlayed.add(playedCard);
+
+                            if (leadSuit == null) {
+                                leadSuit = playedCard.getSuit(); // Set the lead suit
+                            }
+
+                            System.out.println(currentPlayer.getPlayerName() + " played: " + playedCard);
+                            break;
+                        } else {
+                            System.out.println("You must follow the lead suit (" + leadSuit + ") if possible.");
+                        }
+                    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                        System.out.println("Invalid input. Please select a valid card index.");
+                    }
+                }
+
+                // Determine the current highest card of the lead suit
+                if (playedCard.getSuit().equals(leadSuit)) {
+                    if (highestCard == null || playedCard.getRank() > highestCard.getRank()) {
+                        highestCard = playedCard;
+                        trickWinner = currentPlayer;
+                    }
+                }
+            }
+
+            // Announce the winner of the trick
+            System.out.println("Trick winner: " + trickWinner.getPlayerName());
+            trickLeader = trickWinner; // Winner of the trick leads the next trick
+
+            // Assign the trick to the winning team
+            if (team1.getTeamPlayers().contains(trickWinner)) {
+                team1.trickCount++;
+            } else {
+                team2.trickCount++;
+            }
+        }
+
+        // Display results
+        System.out.println("\nTrick phase complete!");
+        System.out.println("Team 1 (Players: " + team1.getTeamPlayers().get(0).getPlayerName() + ", " + team1.getTeamPlayers().get(1).getPlayerName() + ") won " + team1.getTrickCount() + " tricks.");
+        System.out.println("Team 2 (Players: " + team2.getTeamPlayers().get(0).getPlayerName() + ", " + team2.getTeamPlayers().get(1).getPlayerName() + ") won " + team2.getTrickCount() + " tricks.");
+    }
+
+    private boolean currentPlayerHasSuit(Player player, String suit) {
+        for (Card card : player.getPlayerHand().getHandCards()) {
+            if (card.getSuit().equals(suit)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
