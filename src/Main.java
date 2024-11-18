@@ -1,7 +1,6 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,5 +28,16 @@ public class Main {
         // Running the bidding phase
         System.out.println("Starting bidding phase...");
         game.biddingPhase();
+
+        // Check if a contract was made after bidding
+        if (game.getContract() != null) {
+            System.out.println("A contract has been made: " + game.getContract());
+            System.out.println("Starting trick phase...");
+
+            // Run the trick phase
+            game.trickPhase();
+        } else {
+            System.out.println("No valid contract was made. Game over.");
+        }
     }
 }
