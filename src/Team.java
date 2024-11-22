@@ -3,8 +3,8 @@ import java.util.ArrayList;
 
 
 public class Team {
-    private boolean vulnerable;
-    private int trickCount;
+    public boolean vulnerable;
+    public int trickCount;
     private ArrayList<Player> players;
 
     public Team() {
@@ -26,5 +26,9 @@ public class Team {
     public void setTeam(Player x, Player y){
         players.add(x);
         players.add(y);
+    }
+
+    public void setVulnerable(boolean vulnerable) {
+        this.vulnerable = vulnerable;
     }
 }

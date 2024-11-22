@@ -21,12 +21,24 @@ public class Hand {
         handCards.remove(cardPosition);
     }
 
-    public void orderHand() {
-        Collections.sort(handCards, (Card c1, Card c2) -> {
-            if (c1.getSuit().equals(c2.getSuit())) {
-                return Integer.compare(c1.getRank(), c2.getRank());
-            }
-            return c1.getSuit().compareTo(c2.getSuit());
-        });
-    }
+    public Hand orderHand() {
+    Collections.sort(handCards, (Card c1, Card c2) -> {
+        // First, compare suits (Clubs < Diamonds < Hearts < Spades)
+        String[] suitOrder = {"C", "D", "H", "S"};
+        int suitComparison = Integer.compare(
+                java.util.Arrays.asList(suitOrder).indexOf(c1.getSuit()), 
+                java.util.Arrays.asList(suitOrder).indexOf(c2.getSuit())
+        );
+
+        if (suitComparison != 0) {
+            return suitComparison;
+        }
+
+        // If suits are the same, compare ranks
+        return Integer.compare(c1.getRank(), c2.getRank());
+    });
+
+    return this; // Return the sorted hand
+}
+
 }
