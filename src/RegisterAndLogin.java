@@ -3,6 +3,8 @@ package src;
 import java.sql.*;
 import java.util.Scanner;
 
+//java -cp "Classes;lib/sqlite-jdbc-3.36.0.3.jar" src.RegisterAndLogin to run the code
+
 public class RegisterAndLogin {
 
     private static final String DATABASE_URL = "jdbc:sqlite:./db/users.db"; // Correct relative path
@@ -25,7 +27,11 @@ public class RegisterAndLogin {
             scanner.nextLine();  // Consume newline character
 
             if (choice == 1) {
-                registerUser(scanner);
+                if (registerUser(scanner)) {
+                    System.out.println("User registered successfully!");
+                } else {
+                    System.out.println("Registration failed.");
+                }
             } else if (choice == 2) {
                 if (loginUser(scanner)) {
                     System.out.println("You are now logged in. Exiting the system.");
@@ -53,15 +59,14 @@ public class RegisterAndLogin {
             System.err.println("Error creating database: " + e.getMessage());
         }
     }
-    
 
-    private static void registerUser(Scanner scanner) {
+    private static boolean registerUser(Scanner scanner) {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
 
         if (userExists(username)) {
             System.out.println("Username already exists!");
-            return;
+            return false; // Indicate registration failed
         }
 
         System.out.print("Enter password: ");
@@ -74,9 +79,11 @@ public class RegisterAndLogin {
                 pstmt.setString(2, password);
                 pstmt.executeUpdate();
                 System.out.println("Registration successful!");
+                return true; // Indicate registration succeeded
             }
         } catch (SQLException e) {
             System.err.println("Error during registration: " + e.getMessage());
+            return false; // Indicate registration failed
         }
     }
 
