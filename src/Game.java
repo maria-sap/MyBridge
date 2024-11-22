@@ -44,6 +44,7 @@ public class Game {
 
                 while (!validBid) {
                     // Ask for bid or pass
+                    System.out.println(currentPlayer.getPlayerHand().orderHand().getHandCards());
                     System.out.print("Enter your bid (e.g., '2H' for 2 Hearts) or 'pass' to pass: ");
                     String input = scanner.nextLine().trim();
 
