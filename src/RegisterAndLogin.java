@@ -102,14 +102,15 @@ public class RegisterAndLogin {
     }
 
     private static boolean loginUser(Scanner scanner) {
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
+    System.out.print("Enter username: ");
+    String username = scanner.nextLine();
 
-        if (!userExists(username)) {
-            System.out.println("Username does not exist!");
-            return false;
-        }
+    if (!userExists(username)) {
+        System.out.println("Username does not exist!");
+        return false; // Indicate login failed
+    }
 
+    while (true) { // Loop until the user enters the correct password
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
@@ -121,15 +122,17 @@ public class RegisterAndLogin {
 
                 if (rs.next() && rs.getString("password").equals(password)) {
                     System.out.println("Login successful!");
-                    return true; // Successful login
+                    src.Main.main(null); // Call the Main class's main method
+                    return true; // Indicate login succeeded
                 } else {
-                    System.out.println("Invalid password.");
-                    return false; // Invalid password
+                    System.out.println("Invalid password. Try again.");
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error during login: " + e.getMessage());
-            return false;
+            return false; // Indicate login failed
         }
     }
+}
+
 }
